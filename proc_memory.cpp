@@ -25,7 +25,7 @@ void read_process_memory(const pid_t &pid) {
         std::string temp_end {};
         std::cerr << "Cannot get file size of the process, you can try specify start and end offset yourself.\n";
         std::cout << "Enter start offset: ";
-        // for hex numbers do with 0x prefix for decimal numbers to without prefix
+        // for hex numbers do with 0x prefix for decimal numbers do without prefix
         std::cin >> temp_start;
         if (!std::cin) {
             perror("input error");
