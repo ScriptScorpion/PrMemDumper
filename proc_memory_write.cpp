@@ -18,7 +18,7 @@ void write_process_memory(const pid_t &pid) {
     }
     std::string temp_start {};
     off_t start;
-    char value;
+    std::string value {};
     std::cout << "Enter offset to write: ";
     std::cin >> temp_start;
     if (!std::cin) {
@@ -58,26 +58,15 @@ void write_process_memory(const pid_t &pid) {
     }
     
     waitpid(pid, NULL, 0);
-    
-    char *buff = new char[1];
 
-    if (!buff || buff == nullptr) {
-        perror("allocation failed");
-        close(fd);
-        return;
-    }
-
-    memset(buff, 0, 1);
-    buff[0] = value;
-    if (pwrite(fd, buff, 1, start) == -1) {
-        std::cerr << "Error: write is unsuccessful of character: " << value << " at position: " << start << std::endl;
+    if (pwrite(fd, value.c_str(), value.length(), start) == -1) {
+        std::cerr << "Error: write is unsuccessful of string: " << value << " at position: " << start << std::endl;
     }
     else {
-        std::cout << "Writed successfully character: " << value << " at position: " << start << std::endl;
+        std::cout << "Writed successfully string: " << value << " at position: " << start << std::endl;
     }
     
     ptrace(PTRACE_DETACH, pid, NULL, NULL);
-    delete [] buff;
     close(fd);
 }
 int main (int argc, char *argv[]) {
